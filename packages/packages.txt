@@ -1,0 +1,13 @@
+code
+curl
+git
+htop
+keepassxc
+nmap
+vim
+nvim
+vlc
+syncthing
+openssh-client
+ssh
+gnome-terminal
