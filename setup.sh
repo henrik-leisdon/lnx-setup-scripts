@@ -8,10 +8,10 @@ source /etc/os-release
 
 case "$ID" in
   ubuntu)
-    exec ./distro-scripts/ubuntu.sh
+    exec /distro-scripts/setup-ubuntu.sh
     ;;
   fedora)
-    exec /distro-scripts/fedora.sh
+    exec /distro-scripts/setup-fedora.sh
     ;;
   *)
     echo "Unsupported distro: $ID"

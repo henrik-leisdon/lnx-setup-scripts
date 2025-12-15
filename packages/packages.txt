@@ -1,11 +1,10 @@
-code
 curl
 git
 htop
 keepassxc
 nmap
 vim
-nvim
+neovim
 vlc
 syncthing
 openssh-client
