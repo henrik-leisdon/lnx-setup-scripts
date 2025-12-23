@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+
+set_command() {
+
+new_line_link_top="╭ "
+new_line_link_bottom="╰ " 
+prompt_command_separation="\n"
+bash_symbol="\$"
+
+SET_GREEN="\[\033[0;32m\]"
+SET_BLUE="\[\033[0;34m\]"
+SET_RED="\[\033[0;31m\] "
+SET_YELLOW="\[\033[0;93m\]"
+SET_PURPLE="\[\033[0;35m\]"
+SET_LIGHT_BLUE="\[\033[0;96m\]"
+
+BOLD="\[\033[1m\]"
+RESET="\[\033[0m\]"
+SET_GREEN_BACKGROUND="\[\033[42;97m\]"
+SET_RED_BACKGROUND="\[\033[41;10m\]"
+
+
+
+# get git branch
+
+get_git() {
+
+    local branch=$(git branch 2> /dev/null |\
+            sed -n '/^[^*]/d;s/*\s*\(.*\)/\1/p')
+    if [[ -z "$branch" ]]; then
+        echo ""
+        return
+    fi
+ 
+    echo "|on ⎇  ${branch}"
+
+}
+# get artifacrtory env present
+
+get_artifactory() {
+    local artifactory=""
+    if [[ -n "$ARTIFACTORY_USERNAME" ]]; then
+        local artifactory="|${SET_LIGHT_BLUE}+A${RESET}"
+    fi
+    
+    if [[ "$ARTIFACTORY_USERNAME" == *"admin"* ]]; then
+        local artifactory="|${SET_RED_BACKGROUND}${BOLD}+A${RESET}"
+    fi
+
+    echo "$artifactory"
+}
+# get Snyk
+get_snyk() {
+    local snyk=""
+    if [[ -n "$SNYK_TOKEN" ]]; then
+        local snyk="|${SET_PURPLE}+S${RESET}"
+    fi
+
+    echo "$snyk"
+}
+
+# get AWS Profile
+get_aws_profile() {
+    local aws_profile=""
+    if [[ "$AWS_PROFILE" == *"prod"* ]]; then
+    	aws_profile="|${SET_RED}${AWS_PROFILE}${RESET}"
+    fi
+    if [[ "$AWS_PROFILE" == *"staging"* ]]; then
+    	aws_profile="|${SET_YELLOW}${AWS_PROFILE}${RESET}"
+    fi
+    if [[ "$AWS_PROFILE" == *"dev"* ]]; then
+    	aws_profile="|${SET_LIGHT_GREEN}${AWS_PROFILE}${RESET}"
+    fi
+
+    echo "$aws_profile"
+}
+
+PS1="${new_line_link_top}"
+
+
+PS1="${PS1}${SET_GREEN}${BOLD}\u@\h${RESET}"
+PS1="${PS1}$(get_git)"
+PS1="${PS1}$(get_aws_profile)"
+PS1="${PS1}$(get_artifactory)"
+PS1="${PS1}$(get_snyk)"
+
+# get python env
+
+
+PS1="${PS1} \n"
+PS1="${PS1}${new_line_link_bottom}${SET_BLUE}${BOLD}\w${RESET}\$"
+
+}
+# PS1=">\033[s\033[1;\$((COLUMNS-4))f\$(date +%H:%M)\033[u"
+PROMPT_COMMAND=set_command
