@@ -13,18 +13,16 @@ sudo dnf check-update || true
 
 # install important packages
 echo "install essential packages"
-xargs -a packages/packages.txt sudo dnf install -y
+xargs -a ../packages/packages.txt sudo dnf install -y
 
 # copy dotfiles
 echo "copy dotfiles"
-rsync -av dotfiles/ ~/
-
-
+rsync -av ../dotfiles/ ~/
 
 
 # setup gpg
 
-# setup keybindings:
+# setup keybindings ctrl+alt+t for new terminal:
 if command -v gsettings >/dev/null; then
   echo "Setting GNOME keybindings..."
 
