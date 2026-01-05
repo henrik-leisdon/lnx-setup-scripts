@@ -13,11 +13,11 @@ sudo apt update && sudo apt upgrade -y
 
 # install important packages
 echo "install essential packages"
-xargs -a packages/packages.txt sudo apt install -y
+xargs -a ../packages/packages.txt sudo apt install -y
 
 # copy dotfiles
 echo "copy dotfiles"
-rsync -av dotfiles/ ~/
+rsync -av ../dotfiles/ ~/
 
 
 

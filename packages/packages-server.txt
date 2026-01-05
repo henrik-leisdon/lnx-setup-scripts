@@ -1,0 +1,6 @@
+curl
+git
+htop
+vim
+neovim
+rsync
