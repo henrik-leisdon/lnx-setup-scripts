@@ -13,6 +13,7 @@ SET_RED="\[\033[0;31m\] "
 SET_YELLOW="\[\033[0;93m\]"
 SET_PURPLE="\[\033[0;35m\]"
 SET_LIGHT_BLUE="\[\033[0;96m\]"
+SET_SPRING_GREEN="\033[38;5;48m"
 
 BOLD="\[\033[1m\]"
 RESET="\[\033[0m\]"
@@ -75,10 +76,28 @@ get_aws_profile() {
     echo "$aws_profile"
 }
 
+get_python_env()
+{
+	## Conda environment
+	if [ -n "$CONDA_DEFAULT_ENV" ]; then
+		echo "$CONDA_DEFAULT_ENV"
+	## Python virtual environment
+	elif [ -n "${VIRTUAL_ENV:-}" ]; then
+        local regex='PS1=\"\((.*?)\)\s\$\{PS1'
+        local pyenv=$(cat $VIRTUAL_ENV/bin/activate |\
+                perl -n -e"/$regex/ && print \$1" 2> /dev/null)
+        if [ -z "${pyenv}" ]; then
+            local pyenv=$(basename ${VIRTUAL_ENV})
+        fi
+		echo "🐍${SET_SPRING_GREEN}$pyenv${RESET}"
+	fi
+}
+
 PS1="${new_line_link_top}"
 
 
 PS1="${PS1}${SET_GREEN}${BOLD}\u@\h${RESET}"
+PS1="${PS1}$(get_python_env)"
 PS1="${PS1}$(get_git)"
 PS1="${PS1}$(get_aws_profile)"
 PS1="${PS1}$(get_artifactory)"
